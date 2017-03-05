@@ -28,7 +28,7 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         automaticallyAdjustsScrollViewInsets = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        collectionView.contentInset = UIEdgeInsetsMake(250, 0, 0, 0) // leaves 250px space from top, so stats start 250px below top of screen
+        collectionView.contentInset = UIEdgeInsetsMake(250, 0, 0, 0) // leaves space from top, so stats start N px below top of screen
         
         
         chartView = ChartView.create()
@@ -36,6 +36,7 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
         
+        chartView.frame.size.width = collectionView.bounds.size.width // set chartView width responsively http://stackoverflow.com/questions/37725406/how-to-set-uiview-size-to-match-parrent-without-constraints-programmatically/37725903
         chartView.autoresizingMask = [.flexibleWidth, .flexibleHeight] // added because of http://stackoverflow.com/questions/37725406/how-to-set-uiview-size-to-match-parrent-without-constraints-programmatically/37725903
         collectionView.addSubview(chartView)
         
@@ -51,27 +52,11 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
             NSLayoutConstraint(item: chartView, attribute: .leading, relatedBy: .equal, toItem: collectionView, attribute: .leading, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: chartView, attribute: .trailing, relatedBy: .equal, toItem: collectionView, attribute: .trailing, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: chartView, attribute: .width, relatedBy: .equal, toItem: collectionView, attribute: .width, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: chartView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 250)
+            NSLayoutConstraint(item: chartView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 230)
             
             ])
         
-        
-        
-        
-        chart = SwiftStockChart(frame: CGRect(x: 10, y: 10, width: chartView.frame.size.width - 20, height: chartView.frame.size.height - 50))
-        chart.translatesAutoresizingMaskIntoConstraints = false
-        chart.verticalGridStep = 3
-        chartView.addSubview(chart)
-        
-        // price chart layout constraints
-        NSLayoutConstraint.activate([
-            NSLayoutConstraint(item: chart, attribute: .top, relatedBy: .equal, toItem: chartView, attribute: .top, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: chart, attribute: .trailing, relatedBy: .equal, toItem: chartView, attribute: .trailing, multiplier: 1.0, constant: -20),
-            NSLayoutConstraint(item: chart, attribute: .width, relatedBy: .equal, toItem: chartView, attribute: .width, multiplier: 1.0, constant: -20),
-            NSLayoutConstraint(item: chart, attribute: .height, relatedBy: .equal, toItem: chartView, attribute: .height, multiplier: 1.0, constant: -50),
-            ])
-
-
+        createPriceChart()
         
         // *** Here's the important bit *** //
         SwiftStockKit.fetchStockForSymbol(symbol: stockSymbol) { (stock) -> () in
@@ -79,23 +64,39 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
             self.collectionView.reloadData()
         }
         
-
-
-        
     }
     
  
     override func viewDidLayoutSubviews() {
         
-        // re-size price chart responsively
-//        chart.frame.size.width = chartView.frame.size.width - 20
-//        chart.frame.size.height = chartView.frame.size.height - 50
+        chartView.frame.size.width = collectionView.bounds.size.width // set chartView width responsively http://stackoverflow.com/questions/37725406/how-to-set-uiview-size-to-match-parrent-without-constraints-programmatically/37725903
+        
+        // re-create chart (for responsiveness)
+        if (chart.frame.size.width != chartView.frame.size.width) {
+            chart.removeFromSuperview()
 
+            createPriceChart()
+            
+        }
         
         loadChartWithRange(range: .oneDay) // re-draw chart
         
-//        chartView.frame.size.width = collectionView.bounds.size.width // set chartView width responsively http://stackoverflow.com/questions/37725406/how-to-set-uiview-size-to-match-parrent-without-constraints-programmatically/37725903
+    }
+    
+    // *** Price Chart stuff *** //
+    func createPriceChart() {
+        chart = SwiftStockChart(frame: CGRect(x: 0, y: 0, width: chartView.frame.size.width, height: chartView.frame.size.height-70)) // leave some space between bottom of chart DRAWING AREA, and bottom of chartView, for date select buttons
+        chart.translatesAutoresizingMaskIntoConstraints = false
+        chart.verticalGridStep = 3
+        chartView.addSubview(chart)
         
+        // price chart LAYOUT constraints
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: chart, attribute: .top, relatedBy: .equal, toItem: chartView, attribute: .top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: chart, attribute: .trailing, relatedBy: .equal, toItem: chartView, attribute: .trailing, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: chart, attribute: .width, relatedBy: .equal, toItem: chartView, attribute: .width, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: chart, attribute: .height, relatedBy: .equal, toItem: chartView, attribute: .height, multiplier: 1.0, constant: -50),
+            ])
     }
     
     // *** ChartView stuff *** //
