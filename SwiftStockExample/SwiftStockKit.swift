@@ -94,7 +94,7 @@ enum ChartTimeRange {
 class SwiftStockKit {
     
     class func fetchStocksFromSearchTerm(term: String, completion:@escaping (_ stockInfoArray: [StockSearchResult]) -> ()) {
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
             
             let searchURL = "http://autoc.finance.yahoo.com/autoc"
 
@@ -122,7 +122,7 @@ class SwiftStockKit {
     
     class func fetchStockForSymbol(symbol: String, completion:@escaping (_ stock: Stock) -> ()) {
         
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
         
             let stockURL = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22\(symbol)%22)&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&format=json"
                     
@@ -222,7 +222,7 @@ class SwiftStockKit {
    
     class func fetchChartPoints(symbol: String, range: ChartTimeRange, completion:@escaping (_ chartPoints: [ChartPoint]) -> ()) {
     
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
             
             //An Alamofire regular responseJSON wont parse the JSONP with a callback wrapper correctly, so lets work around that.
             let chartURL = SwiftStockKit.chartUrlForRange(symbol, range: range)
