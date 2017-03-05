@@ -26,37 +26,51 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         collectionView.delegate = self
         collectionView.register(UINib(nibName: "StockDataCell", bundle: Bundle.main), forCellWithReuseIdentifier: "stockDataCell")
         automaticallyAdjustsScrollViewInsets = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.contentInset = UIEdgeInsetsMake(250, 0, 0, 0) // leaves 250px space from top, so stats start 250px below top of screen
+        
         
         chartView = ChartView.create()
+        chartView.backgroundColor = UIColor.yellow
         chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
-        chartView.frame.size.width = collectionView.bounds.size.width // added because of http://stackoverflow.com/questions/37725406/how-to-set-uiview-size-to-match-parrent-without-constraints-programmatically/37725903
+        
         chartView.autoresizingMask = [.flexibleWidth, .flexibleHeight] // added because of http://stackoverflow.com/questions/37725406/how-to-set-uiview-size-to-match-parrent-without-constraints-programmatically/37725903
         collectionView.addSubview(chartView)
         
-        // Programmatically set chartView Auto Layout constraints
         
-//        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .height, relatedBy: .equal, toItem:collectionView, attribute: .height, multiplier: 1.0, constant: -(collectionView.bounds.size.height - 230)))
-//        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .width, relatedBy: .equal, toItem:collectionView, attribute: .width, multiplier: 1.0, constant: 0))
-//        
-//        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .top, relatedBy: .equal, toItem:collectionView, attribute: .top, multiplier: 1.0, constant: -250)) // what does this -250 do? it looks like how far from top of chartview (not device view) the stats start?
-//        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .left, relatedBy: .equal, toItem:collectionView, attribute: .left, multiplier: 1.0, constant: 0))
-        
-        // Re-writing Programmatic constraints for chartView
+        // Programmatic constraints for chartView
+        // 0 use tricky negative top position to put chartView in the space left by UIEdgeInsetsMake
+        // 1 leading edge of chartView is the same as the leading edge of collectionView
+        // 2 trailing edge of chartView is the same as the trailing edge of collectionView
+        // 3 width of chartView is same as width of collectionView (maybe not? should be width of device)
+        // 4 height of chartview is constant, for now
         NSLayoutConstraint.activate([
-            NSLayoutConstraint(item: chartView, attribute: .leading, relatedBy: .equal, toItem: collectionView, attribute: .leading, multiplier: 1.0, constant: 0.0), // leading edge of chartView is the same as the leading edge of collectionView
-            NSLayoutConstraint(item: chartView, attribute: .trailing, relatedBy: .equal, toItem: collectionView, attribute: .trailing, multiplier: 1.0, constant: 0.0), // trailing edge of chartView is the same as the trailing edge of collectionView
+            NSLayoutConstraint(item: chartView, attribute: .top, relatedBy: .equal, toItem: collectionView, attribute: .top, multiplier: 1.0, constant: -250.0),
+            NSLayoutConstraint(item: chartView, attribute: .leading, relatedBy: .equal, toItem: collectionView, attribute: .leading, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: chartView, attribute: .trailing, relatedBy: .equal, toItem: collectionView, attribute: .trailing, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: chartView, attribute: .width, relatedBy: .equal, toItem: collectionView, attribute: .width, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: chartView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 250)
             
             ])
         
-        collectionView.contentInset = UIEdgeInsetsMake(250, 0, 0, 0) // leaves 250px space from top  of where stats start?
+        
         
         
         chart = SwiftStockChart(frame: CGRect(x: 10, y: 10, width: chartView.frame.size.width - 20, height: chartView.frame.size.height - 50))
-        chart.fillColor = UIColor.clear
+        chart.translatesAutoresizingMaskIntoConstraints = false
         chart.verticalGridStep = 3
         chartView.addSubview(chart)
-        loadChartWithRange(range: .oneDay)
+        
+        // price chart layout constraints
+        NSLayoutConstraint.activate([
+            NSLayoutConstraint(item: chart, attribute: .top, relatedBy: .equal, toItem: chartView, attribute: .top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: chart, attribute: .trailing, relatedBy: .equal, toItem: chartView, attribute: .trailing, multiplier: 1.0, constant: -20),
+            NSLayoutConstraint(item: chart, attribute: .width, relatedBy: .equal, toItem: chartView, attribute: .width, multiplier: 1.0, constant: -20),
+            NSLayoutConstraint(item: chart, attribute: .height, relatedBy: .equal, toItem: chartView, attribute: .height, multiplier: 1.0, constant: -50),
+            ])
+
 
         
         // *** Here's the important bit *** //
@@ -71,6 +85,18 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
     }
     
  
+    override func viewDidLayoutSubviews() {
+        
+        // re-size price chart responsively
+//        chart.frame.size.width = chartView.frame.size.width - 20
+//        chart.frame.size.height = chartView.frame.size.height - 50
+
+        
+        loadChartWithRange(range: .oneDay) // re-draw chart
+        
+//        chartView.frame.size.width = collectionView.bounds.size.width // set chartView width responsively http://stackoverflow.com/questions/37725406/how-to-set-uiview-size-to-match-parrent-without-constraints-programmatically/37725903
+        
+    }
     
     // *** ChartView stuff *** //
     

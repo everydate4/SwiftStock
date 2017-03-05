@@ -111,7 +111,7 @@
             <connections>
                 <outlet property="btnIndicatorView" destination="FO1-Un-2qZ" id="RIf-EH-YgK"/>
             </connections>
-            <point key="canvasLocation" x="46" y="-134"/>
+            <point key="canvasLocation" x="458" y="-327"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
