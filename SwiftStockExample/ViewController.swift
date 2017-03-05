@@ -102,7 +102,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func keyboardWillHide(_ sender: Notification) {
         if let userInfo = sender.userInfo {
             // if let _ = (userInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue.size.height { // commenting out because of "Initializer for conditional binding must have Optional type", which occurs if the RHS is not optional
-                tableViewBottomConstraint.constant = 0.0
                 UIView.animate(withDuration: 0.25, animations: { () -> Void in
                     self.view.layoutIfNeeded()
                 })
