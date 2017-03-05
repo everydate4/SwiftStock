@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="HhY-WL-1e6">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -19,23 +19,28 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="LwT-1w-c40">
-                                <rect key="frame" x="0.0" y="108" width="600" height="492"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="LwT-1w-c40">
+                                <rect key="frame" x="0.0" y="108" width="320" height="460"/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.97254901960784312" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableView>
-                            <searchBar contentMode="redraw" misplaced="YES" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="THu-c5-NcV">
-                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="THu-c5-NcV">
+                                <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                                 <color key="tintColor" red="0.49917685249999999" green="0.1944865352" blue="0.77761243390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="THu-c5-NcV" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="1CV-VU-PED"/>
+                            <constraint firstAttribute="trailing" secondItem="LwT-1w-c40" secondAttribute="trailing" id="1ek-nv-EJj"/>
                             <constraint firstAttribute="trailingMargin" secondItem="THu-c5-NcV" secondAttribute="trailing" constant="-16" id="1jY-23-14z"/>
+                            <constraint firstAttribute="trailing" secondItem="THu-c5-NcV" secondAttribute="trailing" id="4gA-5Q-Q7h"/>
                             <constraint firstItem="LwT-1w-c40" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="44" id="Avl-N5-ALG"/>
+                            <constraint firstItem="LwT-1w-c40" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="Fh2-GC-PsL"/>
+                            <constraint firstAttribute="bottom" secondItem="LwT-1w-c40" secondAttribute="bottom" id="JYP-Cz-RJm"/>
                             <constraint firstItem="THu-c5-NcV" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="RL5-uH-vph"/>
                             <constraint firstAttribute="trailingMargin" secondItem="LwT-1w-c40" secondAttribute="trailing" constant="-16" id="SFo-Mp-7ta"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="LwT-1w-c40" secondAttribute="bottom" id="bUg-9H-VAw"/>
@@ -85,11 +90,11 @@
                         <viewControllerLayoutGuide type="bottom" id="var-Z2-JBY"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xGf-5w-6Dl">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sc8-NL-OxK">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.97254901960784312" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="E7G-hg-tW4">
                                     <size key="itemSize" width="185" height="44"/>
@@ -107,7 +112,6 @@
                             <constraint firstAttribute="bottom" secondItem="sc8-NL-OxK" secondAttribute="bottom" id="WW5-A2-B4c"/>
                             <constraint firstAttribute="trailingMargin" secondItem="sc8-NL-OxK" secondAttribute="trailing" constant="-16" id="YWV-WU-K8k"/>
                             <constraint firstAttribute="trailing" secondItem="sc8-NL-OxK" secondAttribute="trailing" id="dGE-eO-7yl"/>
-                            <constraint firstItem="sc8-NL-OxK" firstAttribute="top" secondItem="6JG-WP-QoD" secondAttribute="bottom" id="fhN-Qb-IJJ"/>
                             <constraint firstItem="sc8-NL-OxK" firstAttribute="top" secondItem="6JG-WP-QoD" secondAttribute="bottom" id="nge-ba-3cG"/>
                             <constraint firstItem="sc8-NL-OxK" firstAttribute="leading" secondItem="xGf-5w-6Dl" secondAttribute="leadingMargin" constant="-16" id="rtj-ld-e1K"/>
                         </constraints>
