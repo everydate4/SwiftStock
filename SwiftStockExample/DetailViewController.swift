@@ -32,6 +32,8 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         chartView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.addSubview(chartView)
         
+        // Programmatically set chartView Auto Layout constraints
+        
         collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .height, relatedBy: .equal, toItem:collectionView, attribute: .height, multiplier: 1.0, constant: -(collectionView.bounds.size.height - 230)))
         collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .width, relatedBy: .equal, toItem:collectionView, attribute: .width, multiplier: 1.0, constant: 0))
         collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .top, relatedBy: .equal, toItem:collectionView, attribute: .top, multiplier: 1.0, constant: -250))
