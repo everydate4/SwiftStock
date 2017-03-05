@@ -14,15 +14,25 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-SwiftStockExampleTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>432ECC54282C84882B482CCB4CF227FC</key>
+		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8526D89FFE96FEDA20D6D1016A114CE0</key>
+		<key>EA859C9149F5814F6C262B5BCDFE55CD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FDCDD518F52C9671B84787A218EB073D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
