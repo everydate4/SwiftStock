@@ -379,7 +379,8 @@ class SwiftStockChart: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clear
+        // backgroundColor = UIColor.clear
+        backgroundColor = UIColor.blue // debug
         color = UIColor.green
         fillColor = color?.withAlphaComponent(0.25)
         verticalGridStep = 3
