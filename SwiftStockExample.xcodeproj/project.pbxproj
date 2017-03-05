@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		23252442572A47638A6D905F /* Pods_SwiftStockExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E864DBD6CEFCBBB847DA04C6 /* Pods_SwiftStockExampleTests.framework */; };
+		2FCB049F1E6CCA620077C285 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCB049E1E6CCA620077C285 /* NSLayoutConstraint.swift */; };
 		D9183A162A60991E2B704660 /* Pods_SwiftStockExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD64C23975A3163774AB255A /* Pods_SwiftStockExample.framework */; };
 		ED3CAE591B17EB8700E9A7CC /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3CAE581B17EB8700E9A7CC /* ChartView.swift */; };
 		ED3CAE5B1B17EBA600E9A7CC /* ChartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED3CAE5A1B17EBA600E9A7CC /* ChartView.xib */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		12D81EE9EF84195C5BD3BBA2 /* Pods-SwiftStockExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftStockExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftStockExample/Pods-SwiftStockExample.release.xcconfig"; sourceTree = "<group>"; };
 		2420C550C62529E896412177 /* Pods-SwiftStockExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftStockExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftStockExampleTests/Pods-SwiftStockExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		2FCB049E1E6CCA620077C285 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		AA9333BBDFF1A314BA479D93 /* Pods-SwiftStockExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftStockExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftStockExample/Pods-SwiftStockExample.debug.xcconfig"; sourceTree = "<group>"; };
 		AD64C23975A3163774AB255A /* Pods_SwiftStockExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftStockExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D796126E827C20536C7D237D /* Pods-SwiftStockExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftStockExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftStockExampleTests/Pods-SwiftStockExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -93,6 +95,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		2FCB049D1E6CCA360077C285 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2FCB049E1E6CCA620077C285 /* NSLayoutConstraint.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		E777BCC1C68B27B3775296E1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +154,7 @@
 		EDBE74901AF6FF8600EF79AB /* SwiftStockExample */ = {
 			isa = PBXGroup;
 			children = (
+				2FCB049D1E6CCA360077C285 /* Extensions */,
 				ED4904801AF975DB00765F04 /* SwiftStock */,
 				EDBE74931AF6FF8600EF79AB /* AppDelegate.swift */,
 				EDBE74971AF6FF8600EF79AB /* Main.storyboard */,
@@ -398,6 +409,7 @@
 				EDBE74941AF6FF8600EF79AB /* AppDelegate.swift in Sources */,
 				ED49047E1AF970B600765F04 /* DetailViewController.swift in Sources */,
 				ED3CAE591B17EB8700E9A7CC /* ChartView.swift in Sources */,
+				2FCB049F1E6CCA620077C285 /* NSLayoutConstraint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,6 +541,7 @@
 				DEVELOPMENT_TEAM = UM893U6VAL;
 				INFOPLIST_FILE = SwiftStockExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ackley.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -544,6 +557,7 @@
 				DEVELOPMENT_TEAM = UM893U6VAL;
 				INFOPLIST_FILE = SwiftStockExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ackley.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";

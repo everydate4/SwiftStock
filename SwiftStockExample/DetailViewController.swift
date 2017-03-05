@@ -85,7 +85,8 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
     
     // *** Price Chart stuff *** //
     func createPriceChart() {
-        chart = SwiftStockChart(frame: CGRect(x: 0, y: 0, width: chartView.frame.size.width, height: chartView.frame.size.height-70)) // leave some space between bottom of chart DRAWING AREA, and bottom of chartView, for date select buttons
+        let chartWidthBuffer: CGFloat = 20.0
+        chart = SwiftStockChart(frame: CGRect(x: 0, y: 0, width: chartView.frame.size.width-chartWidthBuffer, height: chartView.frame.size.height-70)) // leave some space between bottom of chart DRAWING AREA, and bottom of chartView, for date select buttons
         chart.translatesAutoresizingMaskIntoConstraints = false
         chart.verticalGridStep = 3
         chartView.addSubview(chart)
@@ -93,7 +94,7 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         // price chart LAYOUT constraints
         NSLayoutConstraint.activate([
             NSLayoutConstraint(item: chart, attribute: .top, relatedBy: .equal, toItem: chartView, attribute: .top, multiplier: 1.0, constant: 0.0),
-            NSLayoutConstraint(item: chart, attribute: .trailing, relatedBy: .equal, toItem: chartView, attribute: .trailing, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: chart, attribute: .leading, relatedBy: .equal, toItem: chartView, attribute: .leading, multiplier: 1.0, constant: chartWidthBuffer/2.0),
             NSLayoutConstraint(item: chart, attribute: .width, relatedBy: .equal, toItem: chartView, attribute: .width, multiplier: 1.0, constant: 0),
             NSLayoutConstraint(item: chart, attribute: .height, relatedBy: .equal, toItem: chartView, attribute: .height, multiplier: 1.0, constant: -50),
             ])
