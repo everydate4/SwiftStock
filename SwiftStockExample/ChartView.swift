@@ -10,7 +10,7 @@ import UIKit
 
 protocol ChartViewDelegate {
 
-    func didChangeTimeRange(range range: ChartTimeRange)
+    func didChangeTimeRange(range: ChartTimeRange)
 }
 
 class ChartView: UIView {
@@ -19,49 +19,49 @@ class ChartView: UIView {
     var delegate: ChartViewDelegate!
     
     class func create() -> ChartView {
-        let chartView = UINib(nibName: "ChartView", bundle:nil).instantiateWithOwner(nil, options: nil)[0] as! ChartView
+        let chartView = UINib(nibName: "ChartView", bundle:nil).instantiate(withOwner: nil, options: nil)[0] as! ChartView
         chartView.btnIndicatorView.layer.cornerRadius = 15
         
         return chartView
     }
     
-    @IBAction func timeRangeBtnTapped(sender: AnyObject) {
+    @IBAction func timeRangeBtnTapped(_ sender: AnyObject) {
         
         let btn = sender as! UIButton
        
         btnIndicatorView.center = btn.center
 
-        var range: ChartTimeRange = .OneDay
+        var range: ChartTimeRange = .oneDay
         
         switch btn.tag {
         case 1:
-            range = .OneDay
+            range = .oneDay
         case 2:
-            range = .FiveDays
+            range = .fiveDays
         case 3:
-            range = .TenDays
+            range = .tenDays
         case 4:
-            range = .OneMonth
+            range = .oneMonth
         case 5:
-            range = .ThreeMonths
+            range = .threeMonths
         case 6:
-            range = .OneYear
+            range = .oneYear
         case 7:
-            range = .FiveYears
+            range = .fiveYears
         default:
-            range = .OneDay
+            range = .oneDay
         }
         delegate.didChangeTimeRange(range: range)
         
         for view in subviews {
             
-            if view.isMemberOfClass(UIButton) {
+            if view.isMember(of: UIButton.self) {
                 let subBtn = view as! UIButton
                 if btn.tag == subBtn.tag {
-                    subBtn.setTitleColor(UIColor(red: (127/255), green: (50/255), blue: (198/255), alpha: 1), forState: .Normal)
+                    subBtn.setTitleColor(UIColor(red: (127/255), green: (50/255), blue: (198/255), alpha: 1), for: UIControlState())
                     subBtn.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
                 } else {
-                    subBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                    subBtn.setTitleColor(UIColor.white, for: UIControlState())
                     subBtn.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 14)
                 }
                 

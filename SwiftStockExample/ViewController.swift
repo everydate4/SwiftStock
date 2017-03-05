@@ -22,7 +22,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.tableFooterView = UIView() 
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.registerNib(UINib(nibName: "StockCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "stockCell")
+        tableView.register(UINib(nibName: "StockCell", bundle: Bundle.main), forCellReuseIdentifier: "stockCell")
         tableView.rowHeight = 60
         searchBar.delegate = self
         
@@ -30,7 +30,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     // *** Here's the important bit *** //
-    func searchYahooFinanceWithString(searchText: String) {
+    func searchYahooFinanceWithString(_ searchText: String) {
         
         SwiftStockKit.fetchStocksFromSearchTerm(term: searchText) { (stockInfoArray) -> () in
             
@@ -44,7 +44,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     // Search code
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         let length = searchText.characters.count
         
@@ -57,81 +57,82 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.showsCancelButton = true
         tableView.reloadData()
         return true
     }
     
-    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.showsCancelButton = false
         tableView.reloadData()
         return true
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         searchBar.text = ""
     }
     
     
     //SearchBar stuff
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    func keyboardWillShow(sender: NSNotification) {
+    func keyboardWillShow(_ sender: Notification) {
         if let userInfo = sender.userInfo {
-            if let keyboardHeight = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size.height {
+            // if let keyboardHeight = (userInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue.size.height { // commenting out because of "Initializer for conditional binding must have Optional type", which occurs if the RHS is not optional
+                let keyboardHeight = (userInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue.size.height
                 tableViewBottomConstraint.constant = keyboardHeight
-                UIView.animateWithDuration(0.25, animations: { () -> Void in
+                UIView.animate(withDuration: 0.25, animations: { () -> Void in
                     self.view.layoutIfNeeded()
                 })
-            }
+            // }
         }
     }
     
-    func keyboardWillHide(sender: NSNotification) {
+    func keyboardWillHide(_ sender: Notification) {
         if let userInfo = sender.userInfo {
-            if let _ = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue.size.height {
+            // if let _ = (userInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue.size.height { // commenting out because of "Initializer for conditional binding must have Optional type", which occurs if the RHS is not optional
                 tableViewBottomConstraint.constant = 0.0
-                UIView.animateWithDuration(0.25, animations: { () -> Void in
+                UIView.animate(withDuration: 0.25, animations: { () -> Void in
                     self.view.layoutIfNeeded()
                 })
-            }
+            // }
         }
     }
     
     
     //TableView stuff
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let controller: DetailViewController = storyboard?.instantiateViewControllerWithIdentifier("detailViewController") as! DetailViewController
+        let controller: DetailViewController = storyboard?.instantiateViewController(withIdentifier: "detailViewController") as! DetailViewController
         controller.stockSymbol = searchResults[indexPath.row].symbol!
         navigationController?.pushViewController(controller, animated: true)
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell: StockCell = tableView.dequeueReusableCellWithIdentifier("stockCell") as! StockCell
+        let cell: StockCell = tableView.dequeueReusableCell(withIdentifier: "stockCell") as! StockCell
             cell.symbolLbl.text = searchResults[indexPath.row].symbol
             cell.companyLbl.text = searchResults[indexPath.row].name
             let exchange = searchResults[indexPath.row].exchange!

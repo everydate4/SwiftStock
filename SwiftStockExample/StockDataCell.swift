@@ -13,7 +13,7 @@ class StockDataCell: UICollectionViewCell {
     @IBOutlet weak var fieldNameLbl: UILabel!
     @IBOutlet weak var fieldValueLbl: UILabel!
     
-    func setData(data: [String : String]) {
+    func setData(_ data: [String : String]) {
         fieldNameLbl.text = data.keys.first
         fieldValueLbl.text = data.values.first
 

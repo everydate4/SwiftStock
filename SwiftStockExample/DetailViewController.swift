@@ -24,7 +24,7 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.registerNib(UINib(nibName: "StockDataCell", bundle: NSBundle.mainBundle()), forCellWithReuseIdentifier: "stockDataCell")
+        collectionView.register(UINib(nibName: "StockDataCell", bundle: Bundle.main), forCellWithReuseIdentifier: "stockDataCell")
         automaticallyAdjustsScrollViewInsets = false
         
         chartView = ChartView.create()
@@ -32,18 +32,18 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         chartView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.addSubview(chartView)
         
-        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .Height, relatedBy: .Equal, toItem:collectionView, attribute: .Height, multiplier: 1.0, constant: -(collectionView.bounds.size.height - 230)))
-        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .Width, relatedBy: .Equal, toItem:collectionView, attribute: .Width, multiplier: 1.0, constant: 0))
-        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .Top, relatedBy: .Equal, toItem:collectionView, attribute: .Top, multiplier: 1.0, constant: -250))
-        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .Left, relatedBy: .Equal, toItem:collectionView, attribute: .Left, multiplier: 1.0, constant: 0))
+        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .height, relatedBy: .equal, toItem:collectionView, attribute: .height, multiplier: 1.0, constant: -(collectionView.bounds.size.height - 230)))
+        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .width, relatedBy: .equal, toItem:collectionView, attribute: .width, multiplier: 1.0, constant: 0))
+        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .top, relatedBy: .equal, toItem:collectionView, attribute: .top, multiplier: 1.0, constant: -250))
+        collectionView.addConstraint(NSLayoutConstraint(item: chartView, attribute: .left, relatedBy: .equal, toItem:collectionView, attribute: .left, multiplier: 1.0, constant: 0))
         collectionView.contentInset = UIEdgeInsetsMake(250, 0, 0, 0)
 
         
-        chart = SwiftStockChart(frame: CGRectMake(10, 10, chartView.frame.size.width - 20, chartView.frame.size.height - 50))
-        chart.fillColor = UIColor.clearColor()
+        chart = SwiftStockChart(frame: CGRect(x: 10, y: 10, width: chartView.frame.size.width - 20, height: chartView.frame.size.height - 50))
+        chart.fillColor = UIColor.clear
         chart.verticalGridStep = 3
         chartView.addSubview(chart)
-        loadChartWithRange(range: .OneDay)
+        loadChartWithRange(range: .oneDay)
 
         
         // *** Here's the important bit *** //
@@ -59,7 +59,7 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
     
     // *** ChartView stuff *** //
     
-    func loadChartWithRange(range range: ChartTimeRange) {
+    func loadChartWithRange(range: ChartTimeRange) {
     
         chart.timeRange = range
         
@@ -82,23 +82,23 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
     
     }
     
-    func didChangeTimeRange(range range: ChartTimeRange) {
+    func didChangeTimeRange(range: ChartTimeRange) {
         loadChartWithRange(range: range)
     }
     
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return  stock != nil ? 18 : 0
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return section == 17 ? 1 : 2
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
       
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("stockDataCell", forIndexPath: indexPath) as! StockDataCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "stockDataCell", for: indexPath) as! StockDataCell
         cell.setData(stock!.dataFields[(indexPath.section * 2) + indexPath.row])
         
         
@@ -106,8 +106,8 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-            return CGSize(width: (UIScreen.mainScreen().bounds.size.width/2), height: 44)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            return CGSize(width: (UIScreen.main.bounds.size.width/2), height: 44)
     }
     
     override func didReceiveMemoryWarning() {

@@ -24,6 +24,7 @@
 
 import UIKit
 import Alamofire
+import Foundation
 
 struct StockSearchResult {
     var symbol: String?
@@ -75,7 +76,7 @@ struct Stock {
 }
 
 struct ChartPoint {
-    var date: NSDate?
+    var date: Date?
     var volume: Int?
     var open: CGFloat?
     var close: CGFloat?
@@ -85,19 +86,19 @@ struct ChartPoint {
 }
 
 enum ChartTimeRange {
-    case OneDay, FiveDays, TenDays, OneMonth, ThreeMonths, OneYear, FiveYears
+    case oneDay, fiveDays, tenDays, oneMonth, threeMonths, oneYear, fiveYears
 }
 
 
 
 class SwiftStockKit {
     
-    class func fetchStocksFromSearchTerm(term term: String, completion:(stockInfoArray: [StockSearchResult]) -> ()) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+    class func fetchStocksFromSearchTerm(term: String, completion:@escaping (_ stockInfoArray: [StockSearchResult]) -> ()) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             
             let searchURL = "http://autoc.finance.yahoo.com/autoc"
 
-            Alamofire.request(.GET, searchURL, parameters: ["query": term, "region": 2, "lang": "en"]).responseJSON { response in
+            Alamofire.request(searchURL, parameters: ["query": term, "region": 2, "lang": "en"]).responseJSON { response in
                 
                 if let resultJSON = response.result.value as? [String : AnyObject]  {
                    
@@ -108,8 +109,10 @@ class SwiftStockKit {
                             stockInfoArray.append(StockSearchResult(symbol: dictionary["symbol"], name: dictionary["name"], exchange: dictionary["exchDisp"], assetType: dictionary["typeDisp"]))
                         }
                         
-                        dispatch_async(dispatch_get_main_queue()) {
-                            completion(stockInfoArray: stockInfoArray)
+                        // dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async { // migration edit
+                            // completion(stockInfoArray: stockInfoArray)
+                            completion(stockInfoArray)
                         }
                     }
                 }
@@ -117,13 +120,13 @@ class SwiftStockKit {
         }
     }
     
-    class func fetchStockForSymbol(symbol symbol: String, completion:(stock: Stock) -> ()) {
+    class func fetchStockForSymbol(symbol: String, completion:@escaping (_ stock: Stock) -> ()) {
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
         
             let stockURL = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22\(symbol)%22)&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&format=json"
                     
-            Alamofire.request(.GET, stockURL).responseJSON { response in
+            Alamofire.request(stockURL).responseJSON { response in
                
                 if let resultJSON = response.result.value as? [String : AnyObject]  {
                     
@@ -206,8 +209,10 @@ class SwiftStockKit {
                             yearLow: dataFields[34].values.first,
                             dataFields: dataFields
                         )
-                        dispatch_async(dispatch_get_main_queue()) {
-                            completion(stock: stock)
+                        // dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async { // migration edit
+                            // completion(stock: stock)
+                            completion(stock) // migration edit
                         }
                     }
                 }
@@ -215,24 +220,29 @@ class SwiftStockKit {
         }
     }
    
-    class func fetchChartPoints(symbol symbol: String, range: ChartTimeRange, completion:(chartPoints: [ChartPoint]) -> ()) {
+    class func fetchChartPoints(symbol: String, range: ChartTimeRange, completion:@escaping (_ chartPoints: [ChartPoint]) -> ()) {
     
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             
             //An Alamofire regular responseJSON wont parse the JSONP with a callback wrapper correctly, so lets work around that.
             let chartURL = SwiftStockKit.chartUrlForRange(symbol, range: range)
             
-            Alamofire.request(.GET, chartURL).responseData { response in
+            Alamofire.request(chartURL).responseData { response in // migration edit: Alamofire is .GET by default
   
                 if let data = response.result.value {
 
-                    var jsonString =  NSString(data: data, encoding: NSUTF8StringEncoding)!
+                    var jsonString:String = String(bytes: data, encoding: String.Encoding.utf8)! // migration edit
+                    // var jsonString =  NSString(data: data, encoding: String.Encoding.utf8)!
+                    let fromindex = jsonString.index(jsonString.startIndex, offsetBy: 30) // migration edit
+                    jsonString = jsonString.substring(from:fromindex) // migration edit
+                    // jsonString = jsonString.substringToIndex(jsonString.length-1)
+                    let index = jsonString.index(jsonString.startIndex, offsetBy: jsonString.characters.count-1) // migration edit
+                    jsonString = jsonString.substring(to:index) // migration edit
                     
-                    jsonString = jsonString.substringFromIndex(30)
-                    jsonString = jsonString.substringToIndex(jsonString.length-1)
-                    
-                    if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
-                        if let resultJSON = (try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0)))  as? [String : AnyObject] {
+                    // if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) {
+                    if let data = jsonString.data(using: .utf8) { // migration edit
+                        // if let resultJSON = (try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0)))  as? [String : AnyObject] {
+                        if let resultJSON = (try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)))  as? [String : AnyObject] { // migration edit
                         
                             let series = resultJSON["series"] as! [[String : AnyObject]]
                             var chartPoints = [ChartPoint]()
@@ -242,7 +252,7 @@ class SwiftStockKit {
                                 
                                 chartPoints.append(
                                     ChartPoint(
-                                    date:  date,
+                                    date:  date as Date,
                                     volume: dataPoint["volume"] as? Int,
                                     open: dataPoint["open"] as? CGFloat,
                                     close: dataPoint["close"] as? CGFloat,
@@ -251,8 +261,10 @@ class SwiftStockKit {
                                     )
                                 )
                             }
-                            dispatch_async(dispatch_get_main_queue()) {
-                                 completion(chartPoints: chartPoints)
+                            // dispatch_async(dispatch_get_main_queue()) {
+                            DispatchQueue.main.async { // migration edit
+                                 // completion(chartPoints: chartPoints)
+                                completion(chartPoints)
                             }
                         }
                     }
@@ -261,24 +273,24 @@ class SwiftStockKit {
         }
     }
     
-    class func chartUrlForRange(symbol: String, range: ChartTimeRange) -> String {
+    class func chartUrlForRange(_ symbol: String, range: ChartTimeRange) -> String {
     
         var timeString = String()
         
         switch (range) {
-        case .OneDay:
+        case .oneDay:
             timeString = "1d"
-        case .FiveDays:
+        case .fiveDays:
             timeString = "5d"
-        case .TenDays:
+        case .tenDays:
             timeString = "10d"
-        case .OneMonth:
+        case .oneMonth:
             timeString = "1m"
-        case .ThreeMonths:
+        case .threeMonths:
             timeString = "3m"
-        case .OneYear:
+        case .oneYear:
             timeString = "1y"
-        case .FiveYears:
+        case .fiveYears:
             timeString = "5y"
         }
         
@@ -291,11 +303,11 @@ class SwiftStockKit {
 class SwiftStockChart: UIView {
     
     enum ValueLabelPositionType {
-        case Left, Right, Mirrored
+        case left, right, mirrored
     }
     
-    typealias LabelForIndexGetter = (index: NSInteger) -> String
-    typealias LabelForValueGetter = (value: CGFloat) -> String
+    typealias LabelForIndexGetter = (_ index: NSInteger) -> String
+    typealias LabelForValueGetter = (_ value: CGFloat) -> String
 
     //Index Label Properties
     var labelForIndex: LabelForIndexGetter!
@@ -354,8 +366,8 @@ class SwiftStockChart: UIView {
     var axisLabels = [UILabel]()
     var minValue: CGFloat?
     var maxValue: CGFloat?
-    var initialPath: CGMutablePathRef?
-    var newPath: CGMutablePathRef?
+    var initialPath: CGMutablePath?
+    var newPath: CGMutablePath?
 
     
     //Implementation
@@ -367,9 +379,9 @@ class SwiftStockChart: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clearColor()
-        color = UIColor.greenColor()
-        fillColor = color?.colorWithAlphaComponent(0.25)
+        backgroundColor = UIColor.clear
+        color = UIColor.green
+        fillColor = color?.withAlphaComponent(0.25)
         verticalGridStep = 3
         horizontalGridStep = 3
         margin = 5.0
@@ -389,19 +401,19 @@ class SwiftStockChart: UIView {
         dataPointColor = color
         dataPointBackgroundColor = color
         
-        indexLabelBackgroundColor = UIColor.clearColor()
+        indexLabelBackgroundColor = UIColor.clear
         indexLabelTextColor = UIColor(white: 1, alpha: 0.6)
         indexLabelFont = UIFont(name: "HelveticaNeue-Light", size: 10)
         
-        valueLabelBackgroundColor = UIColor.clearColor()
+        valueLabelBackgroundColor = UIColor.clear
         valueLabelTextColor = UIColor(white: 1, alpha: 0.6)
         valueLabelFont = UIFont(name: "HelveticaNeue-Light", size: 11)
-        valueLabelPosition = .Right
+        valueLabelPosition = .right
         
 
     }
     
-    func setChartPoints(points points: [ChartPoint]) {
+    func setChartPoints(points: [ChartPoint]) {
     
         if points.isEmpty { return }
         
@@ -412,27 +424,27 @@ class SwiftStockChart: UIView {
         
         if maxValue!.isNaN { maxValue = 1.0 }
         
-        for var i = 0; i < verticalGridStep!; i++ {
+        for i in 0 ..< verticalGridStep! {
             
             let yVal = axisHeight! + margin! - CGFloat((i + 1)) * axisHeight! / CGFloat(verticalGridStep!)
-            let p = CGPointMake((valueLabelPosition! == .Right ? axisWidth! : 0), yVal)
+            let p = CGPoint(x: (valueLabelPosition! == .right ? axisWidth! : 0), y: yVal)
             
-            let text = labelForValue(value: minValue! + (maxValue! - minValue!) / CGFloat(verticalGridStep!) * CGFloat((i + 1)))
+            let text = labelForValue(minValue! + (maxValue! - minValue!) / CGFloat(verticalGridStep!) * CGFloat((i + 1)))
             
-            let rect = CGRectMake(margin!,  p.y + 2, self.frame.size.width - margin! * 2 - 4.0, 14.0)
-            let width = text.boundingRectWithSize(rect.size,
-                options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+            let rect = CGRect(x: margin!,  y: p.y + 2, width: self.frame.size.width - margin! * 2 - 4.0, height: 14.0)
+            let width = text.boundingRect(with: rect.size,
+                options: NSStringDrawingOptions.usesLineFragmentOrigin,
                 attributes:[NSFontAttributeName : valueLabelFont!],
                 context: nil).size.width
             
             let xPadding = 6
             let xOffset = width + CGFloat(xPadding)
             
-            let label = UILabel(frame: CGRectMake(p.x - xOffset + 5.0, p.y, width + 2, 14))
+            let label = UILabel(frame: CGRect(x: p.x - xOffset + 5.0, y: p.y, width: width + 2, height: 14))
             label.text = text
             label.font = valueLabelFont
             label.textColor = valueLabelTextColor
-            label.textAlignment = .Center
+            label.textAlignment = .center
             label.backgroundColor = valueLabelBackgroundColor!
             
             self.addSubview(label)
@@ -440,23 +452,23 @@ class SwiftStockChart: UIView {
         
         }
         
-        for var i = 0; i < horizontalGridStep! + 1; i++ {
+        for i in 0 ..< horizontalGridStep! + 1 {
             
-            let text = labelForIndex(index: i)
+            let text = labelForIndex(i)
             
-            let p = CGPointMake(margin! + CGFloat(i) * (axisWidth! / CGFloat(horizontalGridStep!)) * 1.0, axisHeight! + margin!)
+            let p = CGPoint(x: margin! + CGFloat(i) * (axisWidth! / CGFloat(horizontalGridStep!)) * 1.0, y: axisHeight! + margin!)
             
         
-            let rect = CGRectMake(margin!, p.y + 2, self.frame.size.width - margin! * 2 - 4.0, 14)
-            let width = text.boundingRectWithSize(rect.size,
-                options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+            let rect = CGRect(x: margin!, y: p.y + 2, width: self.frame.size.width - margin! * 2 - 4.0, height: 14)
+            let width = text.boundingRect(with: rect.size,
+                options: NSStringDrawingOptions.usesLineFragmentOrigin,
                 attributes:[NSFontAttributeName : indexLabelFont!],
                 context: nil).size.width
             
-            let label = UILabel(frame: CGRectMake(p.x - 5.0, p.y + 5.0, width + 2, 14))
+            let label = UILabel(frame: CGRect(x: p.x - 5.0, y: p.y + 5.0, width: width + 2, height: 14))
             label.text = text
             label.font = indexLabelFont!
-            label.textAlignment = .Left
+            label.textAlignment = .left
             label.textColor = indexLabelTextColor!
             label.backgroundColor = indexLabelBackgroundColor!
             
@@ -465,14 +477,14 @@ class SwiftStockChart: UIView {
         
         }
         
-        self.color = UIColor.whiteColor()
+        self.color = UIColor.white
             //UIColor(red: (127/255), green: (50/255), blue: (198/255), alpha: 1)
         strokeChart()
         self.setNeedsDisplay()
     
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         if !dataPoints.isEmpty {
             drawGrid()
         }
@@ -484,49 +496,49 @@ class SwiftStockChart: UIView {
             
             let ctx = UIGraphicsGetCurrentContext()
             UIGraphicsPushContext(ctx!)
-            CGContextSetLineWidth(ctx, axisLineWidth!)
-            CGContextSetStrokeColorWithColor(ctx, axisColor!.CGColor)
+            ctx?.setLineWidth(axisLineWidth!)
+            ctx?.setStrokeColor(axisColor!.cgColor)
             
-            CGContextMoveToPoint(ctx, margin!, margin!)
-            CGContextAddLineToPoint(ctx, margin!, axisHeight! + margin! + 3)
-            CGContextStrokePath(ctx)
+            ctx?.move(to: CGPoint(x: margin!, y: margin!))
+            ctx?.addLine(to: CGPoint(x: margin!, y: axisHeight! + margin! + 3))
+            ctx?.strokePath()
             
-            for var i = 0; i < horizontalGridStep!; i++ {
+            for i in 0 ..< horizontalGridStep! {
                 
-                CGContextSetStrokeColorWithColor(ctx, innerGridColor!.CGColor)
-                CGContextSetLineWidth(ctx, innerGridLineWidth!)
+                ctx?.setStrokeColor(innerGridColor!.cgColor)
+                ctx?.setLineWidth(innerGridLineWidth!)
                 
-                let point = CGPointMake(CGFloat((1 + i)) * axisWidth! / CGFloat(horizontalGridStep!) * 1.0 + margin!, margin!)
+                let point = CGPoint(x: CGFloat((1 + i)) * axisWidth! / CGFloat(horizontalGridStep!) * 1.0 + margin!, y: margin!)
                 
-                CGContextMoveToPoint(ctx, point.x, point.y)
-                CGContextAddLineToPoint(ctx, point.x, axisHeight! + margin!)
-                CGContextStrokePath(ctx)
+                ctx?.move(to: CGPoint(x: point.x, y: point.y))
+                ctx?.addLine(to: CGPoint(x: point.x, y: axisHeight! + margin!))
+                ctx?.strokePath()
                 
-                CGContextSetStrokeColorWithColor(ctx, axisColor!.CGColor)
-                CGContextSetLineWidth(ctx, axisLineWidth!)
-                CGContextMoveToPoint(ctx, point.x - 0.5, axisHeight! + margin!)
-                CGContextAddLineToPoint(ctx, point.x - 0.5, axisHeight! + margin! + 3)
-                CGContextStrokePath(ctx)
+                ctx?.setStrokeColor(axisColor!.cgColor)
+                ctx?.setLineWidth(axisLineWidth!)
+                ctx?.move(to: CGPoint(x: point.x - 0.5, y: axisHeight! + margin!))
+                ctx?.addLine(to: CGPoint(x: point.x - 0.5, y: axisHeight! + margin! + 3))
+                ctx?.strokePath()
             
             }
         
-            for var i = 0; i < verticalGridStep! + 1; i++ {
+            for i in 0 ..< verticalGridStep! + 1 {
                 
                 let v = maxValue! - (maxValue! - minValue!) / CGFloat(verticalGridStep! * i)
                 
                 if(v == minValue!) {
-                    CGContextSetLineWidth(ctx, axisLineWidth!)
-                    CGContextSetStrokeColorWithColor(ctx, axisColor!.CGColor)
+                    ctx?.setLineWidth(axisLineWidth!)
+                    ctx?.setStrokeColor(axisColor!.cgColor)
                 } else {
-                    CGContextSetStrokeColorWithColor(ctx, innerGridColor!.CGColor)
-                    CGContextSetLineWidth(ctx, innerGridLineWidth!)
+                    ctx?.setStrokeColor(innerGridColor!.cgColor)
+                    ctx?.setLineWidth(innerGridLineWidth!)
                 }
                 
-                let point = CGPointMake(margin!, CGFloat(i) * axisHeight! / CGFloat(verticalGridStep!) + margin!)
+                let point = CGPoint(x: margin!, y: CGFloat(i) * axisHeight! / CGFloat(verticalGridStep!) + margin!)
                 
-                CGContextMoveToPoint(ctx, point.x, point.y)
-                CGContextAddLineToPoint(ctx, axisWidth! + margin!, point.y)
-                CGContextStrokePath(ctx)
+                ctx?.move(to: CGPoint(x: point.x, y: point.y))
+                ctx?.addLine(to: CGPoint(x: axisWidth! + margin!, y: point.y))
+                ctx?.strokePath()
                 
             }
         }
@@ -552,11 +564,11 @@ class SwiftStockChart: UIView {
         let path = getLinePath(scale: scale, smoothing: bezierSmoothing!, close: false)
         
         let pathLayer = CAShapeLayer()
-        pathLayer.frame = CGRectMake(self.bounds.origin.x, self.bounds.origin.y + (margin! * 1.2), self.bounds.size.width, self.bounds.size.height)
+        pathLayer.frame = CGRect(x: self.bounds.origin.x, y: self.bounds.origin.y + (margin! * 1.2), width: self.bounds.size.width, height: self.bounds.size.height)
         pathLayer.bounds = self.bounds
-        pathLayer.path = path.CGPath
+        pathLayer.path = path.cgPath
         pathLayer.fillColor = nil
-        pathLayer.strokeColor = color!.CGColor
+        pathLayer.strokeColor = color!.cgColor
         pathLayer.lineWidth = lineWidth!
         pathLayer.lineJoin = kCALineJoinRound
         
@@ -569,7 +581,7 @@ class SwiftStockChart: UIView {
         minValue = CGFloat(MAXFLOAT)
         maxValue = CGFloat(-MAXFLOAT)
         
-        for var i = 0; i < dataPoints.count; i++ {
+        for i in 0 ..< dataPoints.count {
             let value = dataPoints[i].close!
          
             if value < minValue! {
@@ -632,7 +644,7 @@ class SwiftStockChart: UIView {
         }
     }
     
-    func getUpperRoundNumber(value value: CGFloat, gridStep: Int) -> CGFloat {
+    func getUpperRoundNumber(value: CGFloat, gridStep: Int) -> CGFloat {
         if value <= 0.0 {
             return 0.0
         }
@@ -650,20 +662,20 @@ class SwiftStockChart: UIView {
         return n * CGFloat(scale) / 4.0
     }
     
-    func setGridStep(gridStep gridStep: Int) {
+    func setGridStep(gridStep: Int) {
         verticalGridStep = gridStep
         horizontalGridStep = gridStep
     }
     
-    func getPointForData(index index: Int, scale: CGFloat) -> CGPoint {
+    func getPointForData(index: Int, scale: CGFloat) -> CGPoint {
         if index < 0 || index >= dataPoints.count{
-            return CGPointZero
+            return CGPoint.zero
         }
         
         let dataPoint = dataPoints[index].close!
         
         var properWidth = axisWidth!
-        if timeRange! == .OneDay {
+        if timeRange! == .oneDay {
             properWidth = ((CGFloat(dataPoints.count) / 391.0) * axisWidth!) - margin!
         }
         
@@ -673,9 +685,9 @@ class SwiftStockChart: UIView {
         var yDenom = maxValue! - minValue!
         if yDenom == 0 { yDenom = 0 }
         
-        let pt = CGPointMake(
-            margin! + CGFloat(index) * ( properWidth / xDenom ),
-            ( axisHeight! - (( (dataPoint - minValue!) / yDenom ) * axisHeight!) ) + margin!
+        let pt = CGPoint(
+            x: margin! + CGFloat(index) * ( properWidth / xDenom ),
+            y: ( axisHeight! - (( (dataPoint - minValue!) / yDenom ) * axisHeight!) ) + margin!
         
         )
         
@@ -698,15 +710,15 @@ class SwiftStockChart: UIView {
         
     }
     
-    func getLinePath(scale scale: CGFloat, smoothing: Bool, close: Bool) -> UIBezierPath {
+    func getLinePath(scale: CGFloat, smoothing: Bool, close: Bool) -> UIBezierPath {
     
         let path = UIBezierPath()
 
-        for var i = 0; i < dataPoints.count; i++ {
+        for i in 0 ..< dataPoints.count {
             if i > 0 {
-                path.addLineToPoint(getPointForData(index: i, scale: scale))
+                path.addLine(to: getPointForData(index: i, scale: scale))
             } else {
-                path.moveToPoint(getPointForData(index: i, scale: scale))
+                path.move(to: getPointForData(index: i, scale: scale))
             }
         }
         
@@ -714,14 +726,17 @@ class SwiftStockChart: UIView {
     }
     
     
-    func timeLabelsForTimeFrame(range: ChartTimeRange) -> [String] {
+    func timeLabelsForTimeFrame(_ range: ChartTimeRange) -> [String] {
     
         switch range {
-        case .OneDay:
+        case .oneDay:
             return ["9:30am", "10", "11", "12pm", "1", "2", "3", "4"]
-        case .FiveDays:
+        case .fiveDays:
             
-           let weekday = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!.components(.Weekday, fromDate: NSDate()).weekday
+           // let weekday = (Calendar(identifier: Calendar.Identifier.gregorian) as NSCalendar).components(.weekday, from: Date()).weekday
+            var calendar = Calendar(identifier: .gregorian)
+            let weekday = calendar.component(.weekday, from: Date()) + 1 - calendar.firstWeekday
+            
            switch weekday {
            case 1:
             return ["Mon", "Tues", "Wed", "Thu", "Fri"]
@@ -739,75 +754,79 @@ class SwiftStockChart: UIView {
             return ["Mon", "Tues", "Wed", "Thu", "Fri"]
            default: ()
            }
-        case .TenDays:
-            let weekday = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!.components(.Weekday, fromDate: NSDate()).weekday
+        case .tenDays:
+            // let weekday = (Calendar(identifier: Calendar.Identifier.gregorian) as NSCalendar).components(.weekday, from: Date()).weekday
+            
+            var calendar = Calendar(identifier: .gregorian)
+            let weekday = calendar.component(.weekday, from: Date()) + 1 - calendar.firstWeekday
+            
             switch weekday {
                 //sunday
-            case 1:
-                return ["Mon", "Wed", "Fri", "Mon", "Wed", "Fri"]
-            case 2:
-                return ["Wed", "Fri", "Mon", "Wed", "Fri", "Mon"]
-            case 3:
-                return ["Wed", "Fri", "Mon", "Wed", "Fri", "Tues"]
-            case 4:
-                return ["Fri", "Mon", "Wed", "Fri", "Mon", "Wed"]
-            case 5:
-                return ["Wed", "Mon", "Wed", "Fri", "Tues", "Thu"]
-            case 6:
-                return ["Mon", "Wed", "Fri", "Mon", "Wed", "Fri"]
+                case 1:
+                    return ["Mon", "Wed", "Fri", "Mon", "Wed", "Fri"]
+                case 2:
+                    return ["Wed", "Fri", "Mon", "Wed", "Fri", "Mon"]
+                case 3:
+                    return ["Wed", "Fri", "Mon", "Wed", "Fri", "Tues"]
+                case 4:
+                    return ["Fri", "Mon", "Wed", "Fri", "Mon", "Wed"]
+                case 5:
+                    return ["Wed", "Mon", "Wed", "Fri", "Tues", "Thu"]
+                case 6:
+                    return ["Mon", "Wed", "Fri", "Mon", "Wed", "Fri"]
                 //saturday
-            case 7:
-                return ["Mon", "Wed", "Fri", "Mon", "Wed", "Fri"]
-            default: ()
+                case 7:
+                    return ["Mon", "Wed", "Fri", "Mon", "Wed", "Fri"]
+                default: ()
             }
-        case .OneMonth:
+        case .oneMonth:
             
-            let fmt = NSDateFormatter()
+            let fmt = DateFormatter()
             fmt.dateFormat = "dd MMM"
             let offset = Double(-6*24*60*60)
-            let start = NSDate()
-            let fifthString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset))
-            let fourthString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 2))
-            let thirdString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 3))
-            let secondString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 4))
-            let firstString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 5))
+            let start = Date()
+            let fifthString = fmt.string(from: start.addingTimeInterval(offset))
+            let fourthString = fmt.string(from: start.addingTimeInterval(offset * 2))
+            let thirdString = fmt.string(from: start.addingTimeInterval(offset * 3))
+            let secondString = fmt.string(from: start.addingTimeInterval(offset * 4))
+            let firstString = fmt.string(from: start.addingTimeInterval(offset * 5))
             
             return[firstString, secondString, thirdString, fourthString, fifthString, ""]
-        case .ThreeMonths:
-            let fmt = NSDateFormatter()
+        case .threeMonths:
+            let fmt = DateFormatter()
             fmt.dateFormat = "dd MMM"
             let offset = Double(-15*24*60*60)
-            let start = NSDate()
-            let fifthString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset))
-            let fourthString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 2))
-            let thirdString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 3))
-            let secondString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 4))
-            let firstString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 5))
+            let start = Date()
+            let fifthString = fmt.string(from: start.addingTimeInterval(offset))
+            let fourthString = fmt.string(from: start.addingTimeInterval(offset * 2))
+            let thirdString = fmt.string(from: start.addingTimeInterval(offset * 3))
+            let secondString = fmt.string(from: start.addingTimeInterval(offset * 4))
+            let firstString = fmt.string(from: start.addingTimeInterval(offset * 5))
             
             return[firstString, secondString, thirdString, fourthString, fifthString, ""]
-        case .OneYear:
-            let fmt = NSDateFormatter()
+        case .oneYear:
+            let fmt = DateFormatter()
             fmt.dateFormat = "MMM"
             let offset = Double(-80*24*60*60)
-            let start = NSDate()
-            let fifthString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset))
-            let fourthString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 2))
-            let thirdString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 3))
-            let secondString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 4))
-            let firstString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 5))
+            let start = Date()
+            let fifthString = fmt.string(from: start.addingTimeInterval(offset))
+            let fourthString = fmt.string(from: start.addingTimeInterval(offset * 2))
+            let thirdString = fmt.string(from: start.addingTimeInterval(offset * 3))
+            let secondString = fmt.string(from: start.addingTimeInterval(offset * 4))
+            let firstString = fmt.string(from: start.addingTimeInterval(offset * 5))
             
             return[firstString, secondString, thirdString, fourthString, fifthString, ""]
 
-        case .FiveYears:
-            let fmt = NSDateFormatter()
+        case .fiveYears:
+            let fmt = DateFormatter()
             fmt.dateFormat = "yyyy"
             let offset = Double(-365*24*60*60)
-            let start = NSDate()
-            let fifthString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset))
-            let fourthString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 2))
-            let thirdString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 3))
-            let secondString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 4))
-            let firstString = fmt.stringFromDate(start.dateByAddingTimeInterval(offset * 5))
+            let start = Date()
+            let fifthString = fmt.string(from: start.addingTimeInterval(offset))
+            let fourthString = fmt.string(from: start.addingTimeInterval(offset * 2))
+            let thirdString = fmt.string(from: start.addingTimeInterval(offset * 3))
+            let secondString = fmt.string(from: start.addingTimeInterval(offset * 4))
+            let firstString = fmt.string(from: start.addingTimeInterval(offset * 5))
             
             return[firstString, secondString, thirdString, fourthString, fifthString, ""]
         }
