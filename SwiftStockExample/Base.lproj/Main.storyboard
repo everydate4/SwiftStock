@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -35,10 +36,15 @@
                         <constraints>
                             <constraint firstItem="THu-c5-NcV" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="1CV-VU-PED"/>
                             <constraint firstAttribute="trailing" secondItem="LwT-1w-c40" secondAttribute="trailing" id="1ek-nv-EJj"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="THu-c5-NcV" secondAttribute="trailing" constant="-16" id="1jY-23-14z"/>
                             <constraint firstAttribute="trailing" secondItem="THu-c5-NcV" secondAttribute="trailing" id="4gA-5Q-Q7h"/>
                             <constraint firstItem="LwT-1w-c40" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="44" id="Avl-N5-ALG"/>
                             <constraint firstItem="LwT-1w-c40" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="Fh2-GC-PsL"/>
                             <constraint firstAttribute="bottom" secondItem="LwT-1w-c40" secondAttribute="bottom" id="JYP-Cz-RJm"/>
+                            <constraint firstItem="THu-c5-NcV" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="RL5-uH-vph"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LwT-1w-c40" secondAttribute="trailing" constant="-16" id="SFo-Mp-7ta"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="LwT-1w-c40" secondAttribute="bottom" id="bUg-9H-VAw"/>
+                            <constraint firstItem="LwT-1w-c40" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-16" id="efN-Pw-lhw"/>
                             <constraint firstItem="THu-c5-NcV" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="zdr-IE-SxB"/>
                         </constraints>
                     </view>
@@ -49,6 +55,7 @@
                     <connections>
                         <outlet property="searchBar" destination="THu-c5-NcV" id="Rys-Fd-M1A"/>
                         <outlet property="tableView" destination="LwT-1w-c40" id="uZS-h8-BCh"/>
+                        <outlet property="tableViewBottomConstraint" destination="bUg-9H-VAw" id="SGt-wG-oIQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -102,8 +109,11 @@
                         <constraints>
                             <constraint firstItem="sc8-NL-OxK" firstAttribute="leading" secondItem="xGf-5w-6Dl" secondAttribute="leading" id="SqS-JB-Ynk"/>
                             <constraint firstItem="var-Z2-JBY" firstAttribute="top" secondItem="sc8-NL-OxK" secondAttribute="bottom" id="Tnc-lQ-Xav"/>
+                            <constraint firstAttribute="bottom" secondItem="sc8-NL-OxK" secondAttribute="bottom" id="WW5-A2-B4c"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sc8-NL-OxK" secondAttribute="trailing" constant="-16" id="YWV-WU-K8k"/>
                             <constraint firstAttribute="trailing" secondItem="sc8-NL-OxK" secondAttribute="trailing" id="dGE-eO-7yl"/>
                             <constraint firstItem="sc8-NL-OxK" firstAttribute="top" secondItem="6JG-WP-QoD" secondAttribute="bottom" id="nge-ba-3cG"/>
+                            <constraint firstItem="sc8-NL-OxK" firstAttribute="leading" secondItem="xGf-5w-6Dl" secondAttribute="leadingMargin" constant="-16" id="rtj-ld-e1K"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="SwiftStock" id="N8a-Yz-0MR"/>
