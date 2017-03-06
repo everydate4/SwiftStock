@@ -79,8 +79,6 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
             
         }
         
-        loadChartWithRange(range: .oneDay) // re-draw chart
-        
     }
     
     // *** Price Chart stuff *** //
@@ -98,6 +96,8 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
             NSLayoutConstraint(item: chart, attribute: .width, relatedBy: .equal, toItem: chartView, attribute: .width, multiplier: 1.0, constant: 0),
             NSLayoutConstraint(item: chart, attribute: .height, relatedBy: .equal, toItem: chartView, attribute: .height, multiplier: 1.0, constant: -50),
             ])
+        
+        loadChartWithRange(range: .oneDay) // re-draw chart
     }
     
     // *** ChartView stuff *** //

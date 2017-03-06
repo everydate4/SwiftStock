@@ -4,7 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment version="4128" identifier="iOS"/>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,10 +16,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nh7-66-mc5">
-                    <rect key="frame" x="82" y="191" width="210" height="29"/>
+                    <rect key="frame" x="47" y="191" width="280" height="29"/>
                     <subviews>
-                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAM-FT-HdY">
-                            <rect key="frame" x="0.0" y="0.0" width="30" height="29"/>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAM-FT-HdY">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="DNm-yq-3ud"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <state key="normal" title="1D">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -30,7 +33,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMU-Ga-Gzn">
-                            <rect key="frame" x="30" y="0.0" width="30" height="29"/>
+                            <rect key="frame" x="40" y="0.0" width="40" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="bEB-0Y-kqm"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <state key="normal" title="5D">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -41,7 +47,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cNd-wB-CY9">
-                            <rect key="frame" x="60" y="0.0" width="30" height="29"/>
+                            <rect key="frame" x="80" y="0.0" width="40" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="4Y7-dO-X5Y"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <state key="normal" title="10D">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -52,7 +61,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7zN-wC-xje">
-                            <rect key="frame" x="90" y="0.0" width="30" height="29"/>
+                            <rect key="frame" x="120" y="0.0" width="40" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="K8y-OQ-grF"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <state key="normal" title="1M">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -63,7 +75,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wtH-Sc-b9V">
-                            <rect key="frame" x="120" y="0.0" width="30" height="29"/>
+                            <rect key="frame" x="160" y="0.0" width="40" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="7A7-SO-G4V"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <state key="normal" title="3M">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -74,7 +89,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxn-zC-J7z">
-                            <rect key="frame" x="150" y="0.0" width="30" height="29"/>
+                            <rect key="frame" x="200" y="0.0" width="40" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="7PJ-ej-B1t"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <state key="normal" title="1Y">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -85,7 +103,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nb0-fb-pj3">
-                            <rect key="frame" x="180" y="0.0" width="30" height="29"/>
+                            <rect key="frame" x="240" y="0.0" width="40" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="OdZ-sN-Vl9"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                             <state key="normal" title="5Y">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -96,15 +117,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="210" id="4Lz-0H-hqv"/>
-                    </constraints>
                 </stackView>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FO1-Un-2qZ">
-                    <rect key="frame" x="24" y="190" width="30" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                </view>
             </subviews>
             <color key="backgroundColor" red="0.49917685249999999" green="0.1944865352" blue="0.77761243390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -114,7 +127,7 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="btnIndicatorView" destination="FO1-Un-2qZ" id="RIf-EH-YgK"/>
+                <outlet property="stackedButtonView" destination="nh7-66-mc5" id="CJw-dT-RxW"/>
             </connections>
             <point key="canvasLocation" x="183" y="-118"/>
         </view>

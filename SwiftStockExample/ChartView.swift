@@ -15,12 +15,16 @@ protocol ChartViewDelegate {
 
 class ChartView: UIView {
     
-    @IBOutlet weak var btnIndicatorView: UIView!
     var delegate: ChartViewDelegate!
+    @IBOutlet weak var stackedButtonView: UIStackView!
+    var dateRangeButtonsController: SSRadioButtonsController!
     
     class func create() -> ChartView {
         let chartView = UINib(nibName: "ChartView", bundle:nil).instantiate(withOwner: nil, options: nil)[0] as! ChartView
-        chartView.btnIndicatorView.layer.cornerRadius = 15
+        
+        // set up radio button controller
+        let dateRangeButtons = chartView.stackedButtonView.subviews.filter{$0 is UIButton} as! [UIButton]
+        chartView.dateRangeButtonsController = SSRadioButtonsController(buttons: dateRangeButtons)
         
         return chartView
     }
@@ -28,10 +32,6 @@ class ChartView: UIView {
     @IBAction func timeRangeBtnTapped(_ sender: AnyObject) {
         
         let btn = sender as! UIButton
-       
-        let btnSelectX:CGFloat = (btn.superview?.frame.origin.x)!
-        btnIndicatorView.center.x = btn.center.x + btnSelectX
-        btnIndicatorView.center.y = (btn.superview?.center.y)!
         
 
         var range: ChartTimeRange = .oneDay
