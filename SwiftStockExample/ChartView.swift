@@ -29,7 +29,10 @@ class ChartView: UIView {
         
         let btn = sender as! UIButton
        
-        btnIndicatorView.center = btn.center
+        let btnSelectX:CGFloat = (btn.superview?.frame.origin.x)!
+        btnIndicatorView.center.x = btn.center.x + btnSelectX
+        btnIndicatorView.center.y = (btn.superview?.center.y)!
+        
 
         var range: ChartTimeRange = .oneDay
         
