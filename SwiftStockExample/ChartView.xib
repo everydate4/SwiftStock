@@ -15,123 +15,123 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="230"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nh7-66-mc5">
-                    <rect key="frame" x="47" y="191" width="280" height="29"/>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="nh7-66-mc5">
+                    <rect key="frame" x="25" y="194" width="325" height="26"/>
                     <subviews>
-                        <button opaque="NO" tag="1" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAM-FT-HdY">
-                            <rect key="frame" x="0.0" y="0.0" width="40" height="29"/>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAM-FT-HdY">
+                            <rect key="frame" x="0.0" y="0.0" width="30" height="26"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="DNm-yq-3ud"/>
+                                <constraint firstAttribute="width" constant="30" id="DNm-yq-3ud"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                             <state key="normal" title="1D">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleColor" red="0.41960784313725491" green="0.15294117647058825" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="timeRangeBtnTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="YzC-Cg-ket"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMU-Ga-Gzn">
-                            <rect key="frame" x="40" y="0.0" width="40" height="29"/>
+                            <rect key="frame" x="49" y="0.0" width="30" height="26"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="bEB-0Y-kqm"/>
+                                <constraint firstAttribute="width" constant="30" id="bEB-0Y-kqm"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                             <state key="normal" title="5D">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleColor" red="0.41960784313725491" green="0.15294117647058825" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="timeRangeBtnTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="FRb-Jc-Izw"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cNd-wB-CY9">
-                            <rect key="frame" x="80" y="0.0" width="40" height="29"/>
+                            <rect key="frame" x="98.5" y="0.0" width="30" height="26"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="4Y7-dO-X5Y"/>
+                                <constraint firstAttribute="width" constant="30" id="4Y7-dO-X5Y"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                             <state key="normal" title="10D">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleColor" red="0.41960784313725491" green="0.15294117647058825" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="timeRangeBtnTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="ex5-rW-BGH"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7zN-wC-xje">
-                            <rect key="frame" x="120" y="0.0" width="40" height="29"/>
+                            <rect key="frame" x="147.5" y="0.0" width="30" height="26"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="K8y-OQ-grF"/>
+                                <constraint firstAttribute="width" constant="30" id="K8y-OQ-grF"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                             <state key="normal" title="1M">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleColor" red="0.41960784313725491" green="0.15294117647058825" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="timeRangeBtnTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="IUc-Cl-UPp"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wtH-Sc-b9V">
-                            <rect key="frame" x="160" y="0.0" width="40" height="29"/>
+                            <rect key="frame" x="196.5" y="0.0" width="30" height="26"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="7A7-SO-G4V"/>
+                                <constraint firstAttribute="width" constant="30" id="7A7-SO-G4V"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                             <state key="normal" title="3M">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleColor" red="0.41960784313725491" green="0.15294117647058825" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="timeRangeBtnTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="W87-Be-FLE"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxn-zC-J7z">
-                            <rect key="frame" x="200" y="0.0" width="40" height="29"/>
+                            <rect key="frame" x="246" y="0.0" width="30" height="26"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="7PJ-ej-B1t"/>
+                                <constraint firstAttribute="width" constant="30" id="7PJ-ej-B1t"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                             <state key="normal" title="1Y">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleColor" red="0.41960784313725491" green="0.15294117647058825" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="timeRangeBtnTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="pm2-8t-jPt"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nb0-fb-pj3">
-                            <rect key="frame" x="240" y="0.0" width="40" height="29"/>
+                            <rect key="frame" x="295" y="0.0" width="30" height="26"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="40" id="OdZ-sN-Vl9"/>
+                                <constraint firstAttribute="width" constant="30" id="OdZ-sN-Vl9"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                             <state key="normal" title="5Y">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleColor" red="0.41960784313725491" green="0.15294117647058825" blue="0.72549019607843135" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
                                 <action selector="timeRangeBtnTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="1pA-Uf-gPc"/>
@@ -143,7 +143,9 @@
             <color key="backgroundColor" red="0.49917685249999999" green="0.1944865352" blue="0.77761243390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="nh7-66-mc5" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="9aX-Jr-scz"/>
+                <constraint firstItem="nh7-66-mc5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="25" id="Bco-4e-foA"/>
                 <constraint firstAttribute="bottom" secondItem="nh7-66-mc5" secondAttribute="bottom" constant="10" id="rnS-Jv-sDP"/>
+                <constraint firstAttribute="trailing" secondItem="nh7-66-mc5" secondAttribute="trailing" constant="25" id="zoE-x0-uAc"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

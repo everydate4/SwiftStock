@@ -13,6 +13,19 @@ protocol ChartViewDelegate {
     func didChangeTimeRange(range: ChartTimeRange)
 }
 
+class SSRadioButtonStyler: SSRadioButtonControllerDelegate {
+    func didSelectButton(_ aButton: UIButton?) {
+        aButton?.backgroundColor = UIColor.white
+        aButton?.setTitleColor(UIColor(red: (127/255), green: (50/255), blue: (198/255), alpha: 1), for: UIControlState())
+        aButton?.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
+    }
+    func didUnselectButton(_ aButton: UIButton?) {
+        aButton?.backgroundColor = UIColor.clear
+        aButton?.setTitleColor(UIColor.white, for: UIControlState())
+        aButton?.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 14)
+    }
+}
+
 class ChartView: UIView {
     
     var delegate: ChartViewDelegate!
@@ -28,6 +41,15 @@ class ChartView: UIView {
         chartView.dateRangeButtons = chartView.stackedButtonView.subviews.filter{$0 is UIButton} as! [UIButton]
         chartView.defaultDateRangeButton = chartView.dateRangeButtons[0]
         chartView.dateRangeButtonsController = SSRadioButtonsController(buttons: chartView.dateRangeButtons)
+        
+        // initial radio button styles
+        for button in chartView.dateRangeButtons {
+            button.layer.cornerRadius = 15
+        }
+        
+        // the delegate that handles styling of radio buttons when they're selected/deselected
+        let styler = SSRadioButtonStyler()
+        chartView.dateRangeButtonsController.delegate = styler
         
         return chartView
     }
@@ -58,23 +80,6 @@ class ChartView: UIView {
             range = .oneDay
         }
         delegate.didChangeTimeRange(range: range)
-        
-        for view in subviews {
-            
-            if view.isMember(of: UIButton.self) {
-                let subBtn = view as! UIButton
-                if btn.tag == subBtn.tag {
-                    subBtn.setTitleColor(UIColor(red: (127/255), green: (50/255), blue: (198/255), alpha: 1), for: UIControlState())
-                    subBtn.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14)
-                } else {
-                    subBtn.setTitleColor(UIColor.white, for: UIControlState())
-                    subBtn.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 14)
-                }
-                
-            }
-        
-        }
-        
         
         
     }
