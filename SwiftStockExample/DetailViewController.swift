@@ -97,7 +97,8 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
             NSLayoutConstraint(item: chart, attribute: .height, relatedBy: .equal, toItem: chartView, attribute: .height, multiplier: 1.0, constant: -50),
             ])
         
-        loadChartWithRange(range: .oneDay) // re-draw chart
+        loadChartWithRange(range: .oneDay) // re-draw chart, in default time range
+        chartView.defaultDateRangeButton.sendActions(for: UIControlEvents.touchUpInside) // select button for default time range
     }
     
     // *** ChartView stuff *** //

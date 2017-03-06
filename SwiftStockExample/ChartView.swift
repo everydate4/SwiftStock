@@ -18,13 +18,16 @@ class ChartView: UIView {
     var delegate: ChartViewDelegate!
     @IBOutlet weak var stackedButtonView: UIStackView!
     var dateRangeButtonsController: SSRadioButtonsController!
+    var dateRangeButtons: [UIButton]!
+    var defaultDateRangeButton: UIButton!
     
     class func create() -> ChartView {
         let chartView = UINib(nibName: "ChartView", bundle:nil).instantiate(withOwner: nil, options: nil)[0] as! ChartView
         
         // set up radio button controller
-        let dateRangeButtons = chartView.stackedButtonView.subviews.filter{$0 is UIButton} as! [UIButton]
-        chartView.dateRangeButtonsController = SSRadioButtonsController(buttons: dateRangeButtons)
+        chartView.dateRangeButtons = chartView.stackedButtonView.subviews.filter{$0 is UIButton} as! [UIButton]
+        chartView.defaultDateRangeButton = chartView.dateRangeButtons[0]
+        chartView.dateRangeButtonsController = SSRadioButtonsController(buttons: chartView.dateRangeButtons)
         
         return chartView
     }
