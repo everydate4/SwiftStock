@@ -32,7 +32,7 @@ class DetailViewController: UIViewController,UICollectionViewDelegateFlowLayout,
         
         
         chartView = ChartView.create()
-        chartView.backgroundColor = UIColor.yellow
+        // chartView.backgroundColor = UIColor.yellow // debug
         chartView.delegate = self
         chartView.translatesAutoresizingMaskIntoConstraints = false
         
